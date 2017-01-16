@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<div class=".container-fluid content">
+   <div class="container">
+    <div class="page-header">
+    <h1>Страница блога</h1>
+    </div>
+<div class="row">
+<div class="col-md-9">
+{% for post in posts %}
+
+<div>
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+    <p>{{ post.text|linebreaksbr }}</p>
+    <p>published: {{ post.published_date }}</p>
+</div>
+
+{% endfor %}
+</div>
+<div class="col-md-3"></div>
+</div>
+    </div>
+</div>
+{% endblock %}
