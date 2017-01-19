@@ -8,7 +8,8 @@
     <h1>Страница блога</h1>
     </div>
 <div class="row">
-<div class="col-md-9">
+<div class="col-lg-9 col-md-9 col-sm-9">
+    {% if posts %}
 {% for post in posts %}
 
 <div>
@@ -16,11 +17,13 @@
     <p>{{ post.text|linebreaksbr }}</p>
     <p>published: {{ post.published_date }}</p>
 </div>
-
-{% endfor %}
+<hr>
+{% endfor %}{% endif %}
 </div>
-<div class="col-md-3"></div>
+<div class="col-lg-3 col-md-3 col-sm-3">
+    <img class="img-circle" data-src="holder.js/140x140" src="{% static 'images/my_photo.jpg' %}"
+         alt="Generic placeholder image" style="width: 140px;">
 </div>
-    </div>
+</div></div>
 </div>
 {% endblock %}
