@@ -9,7 +9,7 @@ class Post(models.Model):
     text = models.TextField()
     published_date = models.DateTimeField(blank=True, null=True)
     photo = models.ImageField(
-        upload_to='static/images/',
+        upload_to='./static/images/blog_images/',
         blank=True,
         null=True,
     )

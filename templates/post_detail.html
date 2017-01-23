@@ -2,22 +2,27 @@
 {% load staticfiles %}
 {% block content %}
 <div class=".container-fluid content">
-<div class="row">
-<div class="col-md-9">
-<div class="post">
-    {% if post.published_date %}
-    <div class="date">
-        {{ post.published_date }}
+    <div class="row">
+        <div class="col-md-9">
+            <div class="post">
+                {% if post.published_date %}
+                <div class="date">
+                    {{ post.published_date }}
+                </div>
+                <div class="author">
+                    {{ post.author }}
+                </div>
+                {% if post.photo %}
+                <img class="img-responsive center-block" src="{{ BASE_DIR }}/{{ post.photo }}" alt="">
+
+                {% endif %}
+                {% endif %}
+                <h1>{{ post.title }}</h1>
+                <p>{{ post.text|linebreaksbr }}</p>
+            </div>
+        </div>
+        <div class="col md-3"></div>
     </div>
-    <div class="author">
-    {{ post.author }}
-    </div>
-    {% endif %}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.text|linebreaksbr }}</p>
 </div>
-    </div>
-    <div class="col md-3"></div>
-</div>
-</div>
+
 {% endblock %}
