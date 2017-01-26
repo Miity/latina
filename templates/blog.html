@@ -18,7 +18,7 @@
                     <img class="img-responsive center-block img-thumbnail" src="{{ BASE_DIR }}/{{ post.photo }}" alt="">
                     </a>
                     {% endif %}
-                    <p class="text-justify">{{ post.text }}</p>
+                    <p class="text-justify">{% autoescape off %}{{ post.text }}{% endautoescape %}</p>
                 </div>
                 <hr>
                 {% endfor %}
