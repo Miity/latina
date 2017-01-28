@@ -1,23 +1,22 @@
 from django.db import models
-from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
 
 # Create your models here.
 
 class Post(models.Model):
-    author = models.ForeignKey('auth.User')
-    title = models.CharField(max_length=200)
-    text = RichTextUploadingField()
-    published_date = models.DateTimeField(blank=True, null=True)
-    photo = models.ImageField(
-        upload_to='./static/images/blog_images/',
+
+    class Meta():
+        db_table = 'posts'
+
+    post_author = models.ForeignKey('auth.User')
+    post_title = models.CharField(max_length=200)
+    post_photo = models.ImageField(
+        upload_to='blog_titels/',
         blank=True,
         null=True,
     )
-
-    def publish(self):
-        self.published_date = timezone.now()
-        self.save()
+    post_text = RichTextUploadingField()
+    post_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.post_title
