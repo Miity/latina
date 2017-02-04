@@ -21,3 +21,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.post_title
+
+class Comments (models.Model):
+    class Meta():
+        db_table = 'comments'
+
+    comments_text = models.TextField()
+    comments_post = models.ForeignKey(Post)
