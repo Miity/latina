@@ -16,7 +16,6 @@
     <meta charset="utf-8">
 </head>
 <body>
-
 {% block header %}
 <!-- Fixed navbar -->
 <div class="navbar navbar-fixed-top" role="navigation">
@@ -28,12 +27,18 @@
             <li><a href="#">О нас</a></li>
             <li><a href="#">Контакты</a></li>
         </ul>
+        <ul class="nav navbar-right">
+            {% if user.is_authenticated %}
+            <li><a href="/auth/logout/">Выйти ({{ user.username }})</a></li>
+            {% else %}
+            <li><a href="/auth/login/">Войти</a></li>
+            {% endif %}
+        </ul>
     </div>
 </div>
 {% endblock %}
-
-{% block content %}
-{% endblock %}
+{% block login %} {% endblock %}
+{% block content %} {% endblock %}
 
 {% block footer %}
 <div class="footer container">
@@ -53,7 +58,6 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery-2.1.4.min.js'%}"></script>
 <script src="{% static 'js/bootstrap.js'%}"></script>
-<script src="../../assets/js/docs.min.js"></script>
 {% endblock %}
 
 

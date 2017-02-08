@@ -15,14 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from mainapp.views import *
-import blog
 from django.conf.urls.static import static
 from latina import settings
+from blog.views import main
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', main),
     url(r'^blog/', include('blog.urls')),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^auth/', include('loginsys.urls')),
+    url(r'^$', main),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
