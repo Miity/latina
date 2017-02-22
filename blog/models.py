@@ -32,9 +32,10 @@ class Post(models.Model):
     post_slug = models.SlugField(max_length=200, db_index=True, verbose_name="URL-название")
     post_img = models.ImageField(upload_to='blog_titels/', blank=True, null=True, verbose_name="Изображение")
     post_description = RichTextField(blank=True, verbose_name="Описание")
+    post_short_description = RichTextField(max_length=300, blank=True, null=True, verbose_name="Короткое описание")
     post_available = models.BooleanField(default=True, verbose_name="Доступно/нет")
-    post_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата публикации")
-    post_updated = models.DateTimeField(auto_now=True, verbose_name="Дата последнего обновления")
+    post_created = models.DateField(auto_now_add=True, verbose_name="Дата публикации")
+    post_updated = models.DateField(auto_now=True, verbose_name="Последние обновления")
 
     def get_absolute_url(self):
         return reverse('blog:PostDetail', args=[self.id, self.post_slug])
@@ -44,11 +45,13 @@ class Post(models.Model):
         index_together = ['id', 'post_slug']
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+        ordering = ['-post_created']
+
     def __str__(self):
         return self.post_title
 
     def bit(self):
-        if self.post_photo:
+        if self.post_img:
             return u'<img src="/media/{}" width="100px"/>'.format(self.post_img)
         else:
             return u'(none)'

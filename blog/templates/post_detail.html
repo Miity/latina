@@ -3,19 +3,49 @@
 {% load static %}
 
 {% block title %}
-  {{ post.post_title }}
+{{ post.post_title }}
 {% endblock %}
+
+
+{% block page_header %}
+<!-- ----------------------------- Page Header ---------------------------- -->
+
+{% if post.post_img %}
+<header class="intro-header" style="background-image: url({{ post.post_img.url }})">
+    <div class="blackout">
+        {% else %}
+        <header class="intro-header">
+            {% endif %}
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        <div class="post-heading">
+                            <h1>{{ post.post_title }}</h1>
+                            <br>
+                            <span class="meta">Написано для <a
+                                    href="{{ BASE_DIR }}">Latina</a> {{ post.post_created }}<br>
+                                    Категория: <a href="{{ post.post_category.get_absolute_url }}">
+                                    {{ post.post_category }}</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if post.post_img %}
+    </div>
+    {% endif %}
+</header>
+{% endblock %}
+
 {% block content %}
-  <div class="product-detail">
-    <div class="col-sm-4">
-      <img src="{% if post.post_img %}{{ post.post_img.url }}{% else %}{% static "img/no-image.jpg"%}{% endif %}" class="img-responsive">
+
+<article>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                {% autoescape off %}{{ post.post_description }}{% endautoescape %}
+            </div>
+        </div>
     </div>
-    <div class="col-sm-8">
-      <h1>{{ post.post_title }}</h1>
-      <h2><a href="{{ post.post_category.get_absolute_url }}">{{ post.post_category }}</a></h2>
-      <span>
-        {{ post.post_description | linebreaks}}
-      </span>
-    </div>
-  </div>
+</article>
+
 {% endblock %}

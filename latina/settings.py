@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'loginsys',
     'mptt',
+    'pages'
 ]
 
 MIDDLEWARE = [
