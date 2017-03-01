@@ -145,7 +145,7 @@ hr.small {
   -moz-background-size: cover;
   background-size: cover;
   -o-background-size: cover;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 .intro-header .site-heading,
 .intro-header .post-heading,
@@ -236,9 +236,12 @@ hr.small {
 
 }
 .post-preview .post-title{
+
     font-size: 30px;
+
 }
 .post-preview > a > .post-img > .post-title{
+    padding-left: 10px;
     position:absolute;
     bottom:0;
     background-color: rgba(0, 0, 0, 0.5);

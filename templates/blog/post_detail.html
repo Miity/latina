@@ -48,4 +48,20 @@
     </div>
 </article>
 
+<div class="entry-pagination">
+    <ul class="pager">
+        {% with prev=post.get_prev %}
+        {% if prev %}
+        <li><a href="{{ prev.get_absolute_url }}">← предыдущий</a></li>
+        {% endif %}
+        {% endwith %}
+        {% with next=post.get_next %}
+        {% if next %}
+        <li><a href="{{ next.get_absolute_url }}">следующий →</a></li>
+        {% endif %}
+        {% endwith %}
+    </ul>
+    <!--close pager-->
+</div>
+
 {% endblock %}

@@ -1,5 +1,5 @@
 from django.db import models
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
@@ -9,21 +9,19 @@ from django.core.urlresolvers import reverse
 
 # Модель категории
 class Category(models.Model):
-
-    name = models.CharField(max_length=50, unique=True, verbose_name="Название")
-    slug = models.SlugField(max_length=200, db_index=True, unique=True, verbose_name="URL-название")
+    category_name = models.CharField(max_length=50, unique=True, verbose_name="Название")
+    category_slug = models.SlugField(max_length=200, db_index=True, unique=True, verbose_name="URL-название")
 
     def get_absolute_url(self):
-        return reverse('blog:BlogListByCategory', args=[self.slug])
+        return reverse('blog:BlogListByCategory', args=[self.category_slug,])
 
     class Meta():
         db_table = 'category'
-        ordering = ['name']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return self.name
+        return self.category_name
 
 
 class Post(models.Model):
@@ -31,24 +29,37 @@ class Post(models.Model):
     post_title = models.CharField(max_length=200, db_index=True, verbose_name="Название")
     post_slug = models.SlugField(max_length=200, db_index=True, verbose_name="URL-название")
     post_img = models.ImageField(upload_to='blog_titels/', blank=True, null=True, verbose_name="Изображение")
-    post_description = RichTextField(blank=True, verbose_name="Описание")
-    post_short_description = RichTextField(max_length=300, blank=True, null=True, verbose_name="Короткое описание")
-    post_available = models.BooleanField(default=True, verbose_name="Доступно/нет")
-    post_created = models.DateField(auto_now_add=True, verbose_name="Дата публикации")
-    post_updated = models.DateField(auto_now=True, verbose_name="Последние обновления")
+    post_description = RichTextUploadingField(blank=True, verbose_name="Описание")
+    post_short_description = models.TextField(max_length=300, blank=True, null=True, verbose_name="Короткое описание")
+    post_available = models.BooleanField(default=True, verbose_name="Опубликованно")
+    post_posted = models.DateField(auto_now_add=True, verbose_name="Дата публикации")
 
-    def get_absolute_url(self):
-        return reverse('blog:PostDetail', args=[self.id, self.post_slug])
 
     class Meta():
         db_table = 'posts'
-        index_together = ['id', 'post_slug']
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
-        ordering = ['-post_created']
+        ordering = ['-post_posted']
 
     def __str__(self):
         return self.post_title
+
+    def get_absolute_url(self):
+        return reverse('blog:PostDetail', args=[self.id])
+
+    def get_next(self):
+        try:
+            return Post.objects.all().filter(id__gt=self.id).exclude(id=self.id).order_by(
+                'id')[:1].get()
+        except Post.DoesNotExist:
+            return
+
+    def get_prev(self):
+        try:
+            return Post.objects.all().filter(id__lt=self.id).exclude(id=self.id).order_by(
+                '-id')[:1].get()
+        except Post.DoesNotExist:
+            return
 
     def bit(self):
         if self.post_img:
@@ -59,11 +70,5 @@ class Post(models.Model):
     bit.allow_tags = True
 
 
-class Comments (models.Model):
-    class Meta():
-        db_table = 'comments'
 
-    comments_date = models.DateTimeField(blank=True, null=True, )
-    comments_text = models.TextField(verbose_name="Комментарии")
-    comments_post = models.ForeignKey(Post)
-    comments_user = models.ForeignKey(User)
+
