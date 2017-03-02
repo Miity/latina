@@ -11,6 +11,8 @@ from django.core.urlresolvers import reverse
 class Category(models.Model):
     category_name = models.CharField(max_length=50, unique=True, verbose_name="Название")
     category_slug = models.SlugField(max_length=200, db_index=True, unique=True, verbose_name="URL-название")
+    category_parent = models.ForeignKey('self', related_name='category', verbose_name='Родительская категория',
+                                        blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('blog:BlogListByCategory', args=[self.category_slug,])
@@ -39,7 +41,7 @@ class Post(models.Model):
         db_table = 'posts'
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
-        ordering = ['-post_posted']
+        ordering = ['-id']
 
     def __str__(self):
         return self.post_title

@@ -37,16 +37,31 @@
 {% endblock %}
 
 {% block content %}
-
+<!-- ----------------------------- Page Content ---------------------------- -->
 <article>
     <div class="container">
         <div class="row">
+            <!-- ----------------------------- Page Breadcrumbs ---------------------------- -->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/blog">Блог</a></li>
+                {% with cat=post.post_category %}
+                {% if cat.category_parent %}
+                <li class="breadcrumb-item">
+                    <a href="{{cat.category_parent.get_bsolute_url}}">{{cat.category_parent.category_name}}</a>
+                </li>
+                {% endif %}
+                <li class="breadcrumb-item active">{{cat.category_name}}</li>
+                {% endwith %}
+            </ol>
+            <!-- ----------------------------- End Page Breadcrumbs ---------------------------- -->
+
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 {% autoescape off %}{{ post.post_description }}{% endautoescape %}
             </div>
         </div>
     </div>
 </article>
+<!-- ----------------------------- End Page Content ---------------------------- -->
 
 <div class="entry-pagination">
     <ul class="pager">
